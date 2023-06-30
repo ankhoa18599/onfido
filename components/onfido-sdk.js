@@ -26,7 +26,7 @@ const OnfidoSdk = () => {
 
   const handleGenerateTokenSdk = async () => {
     const { data } = await axios.post(
-      "http://192.168.3.20:8080/api/onfido/generate-token",
+      "https://835d-115-73-219-129.ngrok-free.app/api/onfido/generate-token",
       {
         applicant_id: userData.applicant_id,
       },
@@ -42,7 +42,7 @@ const OnfidoSdk = () => {
 
   const handleGenerateWorkflowRunId = async () => {
     const { data } = await axios.post(
-      "http://192.168.3.20:8080/api/workflow_run/create",
+      "https://835d-115-73-219-129.ngrok-free.app/api/workflow_run/create",
       {
         applicant_id: userData.applicant_id,
       },
@@ -58,7 +58,7 @@ const OnfidoSdk = () => {
 
   const handleSendDataCompleteToBackend = async (dataSend) => {
     const { data } = await axios.post(
-      "http://192.168.3.20:8080/api/file/create",
+      "https://835d-115-73-219-129.ngrok-free.app/api/file/create",
       dataSend,
       {
         headers: {

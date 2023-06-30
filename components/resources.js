@@ -33,7 +33,7 @@ import moment from "moment";
 
 const handleDownloadResources = async (dataSend) => {
   const { data, headers, request } = await axios.get(
-    "http://192.168.3.20:8080/api/file/download",
+    "https://835d-115-73-219-129.ngrok-free.app/api/file/download",
     {
       params: dataSend,
     },
@@ -47,7 +47,7 @@ const handleDownloadResources = async (dataSend) => {
 
 const getDataReportByWorkflowRunId = async (workflowRunId) => {
   const { data } = await axios.get(
-    "http://192.168.3.20:8080/api/task/list",
+    "https://835d-115-73-219-129.ngrok-free.app/api/task/list",
     {
       params: {
         workflow_run_id: workflowRunId,
@@ -66,7 +66,7 @@ const getDataReportByWorkflowRunId = async (workflowRunId) => {
 
 const getDataWorkflowRunResult = async (workflowRunId) => {
   const { data } = await axios.get(
-    "http://192.168.3.20:8080/api/workflow_run/get",
+    "https://835d-115-73-219-129.ngrok-free.app/api/workflow_run/get",
     {
       params: {
         workflow_run_id: workflowRunId,
