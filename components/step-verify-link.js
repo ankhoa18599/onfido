@@ -4,17 +4,14 @@ import FormBegin from "./form-verify";
 import OnfidoSdk from "./onfido-sdk";
 import VerifyContext from "./context";
 import Resources from "./resources";
+import FormCheckCode from "./form-code";
 const steps = [
   {
     title: "Register",
-    content: <FormBegin />,
+    content: <FormCheckCode />,
   },
   {
     title: "Verify",
-    content: <OnfidoSdk />,
-  },
-  {
-    title: "Verify Results",
     content: <OnfidoSdk />,
   },
   {
@@ -42,7 +39,7 @@ const StepVerify = () => {
     borderRadius: token.borderRadiusLG,
     border: `1px dashed ${token.colorBorder}`,
     marginTop: 16,
-    width: "1000px",
+    width: "500px",
     padding: "20px",
   };
 
@@ -68,7 +65,7 @@ const StepVerify = () => {
             marginTop: 24,
           }}
         >
-          {/* {current > 0 && (
+          {current > 0 && (
             <Button
               style={{
                 margin: "0 8px",
@@ -77,8 +74,8 @@ const StepVerify = () => {
             >
               Previous
             </Button>
-          )} */}
-          {/* {current < steps.length - 1 && (
+          )}
+          {current < steps.length - 1 && (
             <Button type="primary" onClick={() => next()}>
               Next
             </Button>
@@ -91,7 +88,7 @@ const StepVerify = () => {
             >
               Done
             </Button>
-          )} */}
+          )}
         </div>
       </VerifyContext.Provider>
     </div>
