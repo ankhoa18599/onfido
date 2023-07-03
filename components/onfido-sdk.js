@@ -1,8 +1,10 @@
-import { Button, Modal, Spin } from "antd";
+import { Button, Modal, Result, Spin } from "antd";
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import VerifyContext from "./context";
 import moment from "moment/moment";
+import { getDataReportByWorkflowRunId } from "../common/ultils";
+import { uniqBy } from "lodash";
 
 const isObjectEmpty = (obj) => Object.keys(obj).length === 0;
 
@@ -26,7 +28,7 @@ const OnfidoSdk = () => {
 
   const handleGenerateTokenSdk = async () => {
     const { data } = await axios.post(
-      "https://835d-115-73-219-129.ngrok-free.app/api/onfido/generate-token",
+      "http://192.168.3.20:8080/api/onfido/generate-token",
       {
         applicant_id: userData.applicant_id,
       },
@@ -42,7 +44,7 @@ const OnfidoSdk = () => {
 
   const handleGenerateWorkflowRunId = async () => {
     const { data } = await axios.post(
-      "https://835d-115-73-219-129.ngrok-free.app/api/workflow_run/create",
+      "http://192.168.3.20:8080/api/workflow_run/create",
       {
         applicant_id: userData.applicant_id,
       },
@@ -58,7 +60,7 @@ const OnfidoSdk = () => {
 
   const handleSendDataCompleteToBackend = async (dataSend) => {
     const { data } = await axios.post(
-      "https://835d-115-73-219-129.ngrok-free.app/api/file/create",
+      "http://192.168.3.20:8080/api/file/create",
       dataSend,
       {
         headers: {
@@ -225,6 +227,58 @@ const OnfidoSdk = () => {
   const handleCancel = () => {
     setOpen(false);
   };
+
+  const [status, setStatus] = useState("loading");
+  useLayoutEffect(() => {
+    const handleCheckVerified = async () => {
+      const workflowRunId = await handleGenerateWorkflowRunId();
+      // const workflowRunId = "3b90820c-a4c7-4635-817b-6c2dc84b75ae";
+
+      const { data } = await getDataReportByWorkflowRunId(workflowRunId);
+
+      const parseData = data.map((item) => JSON.parse(item.resource));
+      const filterDataHaveOutput = parseData.filter(
+        (item) => Object.keys(item?.resource?.output || {})?.length > 0
+      );
+      const uniqueReportByIdResource = uniqBy(filterDataHaveOutput, (item) => {
+        return item.resource.id;
+      });
+      console.log(uniqueReportByIdResource);
+
+      if (uniqueReportByIdResource && uniqueReportByIdResource.length > 1) {
+        if (uniqueReportByIdResource.length < 8) {
+          setStatus("verifying");
+        } else {
+          setStatus("verified");
+        }
+      } else {
+        setStatus("reverify");
+      }
+    };
+    if (userData) handleCheckVerified();
+  }, [userData]);
+
+  if (status === "loading")
+    return (
+      <div className="text-center">
+        <Spin loading={loading} size="large" className="mx-auto" />
+      </div>
+    );
+
+  if (status === "verifying")
+    return (
+      <div className="text-center">
+        <Result title="Verifying..." />
+      </div>
+    );
+
+  if (status === "verified")
+    return (
+      <div className="text-center">
+        <Result status={"success"} title="Verified" />
+      </div>
+    );
+
   return (
     <>
       <Button type="default" onClick={showModal}>

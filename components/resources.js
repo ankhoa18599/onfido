@@ -17,6 +17,10 @@ import {
 import axios from "axios";
 import { uniqBy } from "lodash";
 import moment from "moment";
+import {
+  getDataReportByWorkflowRunId,
+  getDataWorkflowRunResult,
+} from "../common/ultils";
 
 /*** Vendors ***/
 
@@ -33,7 +37,7 @@ import moment from "moment";
 
 const handleDownloadResources = async (dataSend) => {
   const { data, headers, request } = await axios.get(
-    "https://835d-115-73-219-129.ngrok-free.app/api/file/download",
+    "http://192.168.3.20:8080/api/file/download",
     {
       params: dataSend,
     },
@@ -43,44 +47,6 @@ const handleDownloadResources = async (dataSend) => {
   );
 
   return request.responseURL;
-};
-
-const getDataReportByWorkflowRunId = async (workflowRunId) => {
-  const { data } = await axios.get(
-    "https://835d-115-73-219-129.ngrok-free.app/api/task/list",
-    {
-      params: {
-        workflow_run_id: workflowRunId,
-      },
-    },
-    {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
-      },
-    }
-  );
-
-  return data;
-};
-
-const getDataWorkflowRunResult = async (workflowRunId) => {
-  const { data } = await axios.get(
-    "https://835d-115-73-219-129.ngrok-free.app/api/workflow_run/get",
-    {
-      params: {
-        workflow_run_id: workflowRunId,
-      },
-    },
-    {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
-      },
-    }
-  );
-
-  return data;
 };
 
 const StartReport = ({ data }) => {
@@ -753,6 +719,7 @@ const ReportResources = ({ data, workflowRunId }) => {
     if (workflowRunId) getDataResult();
   }, [workflowRunId]);
 
+  console.log(workflowRunResult);
   return (
     <div className="d-flex flex-column gap-3">
       <div>
@@ -769,8 +736,18 @@ const ReportResources = ({ data, workflowRunId }) => {
           <Modal
             title={
               <div>
-                Report Details
-                {workflowRunResult && <Tag>Result</Tag>}
+                Report Details{" "}
+                {workflowRunResult && (
+                  <Tag
+                    color={
+                      workflowRunResult.status === "approved"
+                        ? "success"
+                        : "default"
+                    }
+                  >
+                    {workflowRunResult.status}
+                  </Tag>
+                )}
               </div>
             }
             open={isModalOpen}

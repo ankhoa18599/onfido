@@ -51,7 +51,7 @@ const FormRegister = () => {
 
     axios
       .post(
-        "https://835d-115-73-219-129.ngrok-free.app/api/customer/create",
+        "http://192.168.3.20:8080/api/customer/create",
         {
           first_name: dataStorage.first_name,
           last_name: dataStorage.last_name,
