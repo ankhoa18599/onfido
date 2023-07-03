@@ -5,14 +5,19 @@ import OnfidoSdk from "./onfido-sdk";
 import VerifyContext from "./context";
 import Resources from "./resources";
 import FormCheckCode from "./form-code";
+import OnfidoSdkResult from "./onfido-sdk-result";
 const steps = [
   {
-    title: "Register",
+    title: "Check Code",
     content: <FormCheckCode />,
   },
   {
-    title: "Verify",
+    title: "Verify KYC",
     content: <OnfidoSdk />,
+  },
+  {
+    title: "Verify Result",
+    content: <OnfidoSdkResult />,
   },
   {
     title: "Resources",
@@ -39,7 +44,7 @@ const StepVerify = () => {
     borderRadius: token.borderRadiusLG,
     border: `1px dashed ${token.colorBorder}`,
     marginTop: 16,
-    width: "500px",
+    width: "100%",
     padding: "20px",
   };
 
@@ -48,7 +53,7 @@ const StepVerify = () => {
   }, [current]);
 
   return (
-    <div>
+    <div className="container">
       <VerifyContext.Provider value={{ userData, current, setCurrent }}>
         <Steps current={current} items={items} />
 

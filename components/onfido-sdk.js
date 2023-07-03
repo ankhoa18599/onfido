@@ -22,9 +22,34 @@ const isVerifyExisted = (data) => {
 const OnfidoSdk = () => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const { userData, setCurrent } = useContext(VerifyContext);
+  
 
   let Onfido;
+
+  const [userData,setUserData] = useState();
+
+  useEffect(()=>{
+    setUserData(JSON.parse(localStorage.getItem("customer_info") || "{}"))
+  },[])
+
+  const [workFlowRunId, setWorkFlowRunId] = useState();
+
+  useEffect(() => {
+    const dataLocal = JSON.parse(localStorage.getItem("workflow_run") || "{}")
+
+    localStorage.setItem("workflow_run",JSON.stringify({
+      workflow_run_id:"23871238712391283p9123i09",
+      done:true
+    }))
+    setWorkFlowRunId(dataLocal)
+  }, [])
+
+
+  if (workFlowRunId?.done){
+    return <div className="text-center">
+      <Result status={"success"} title="Update Document Success" />
+    </div>
+  }
 
   const handleGenerateTokenSdk = async () => {
     const { data } = await axios.post(
@@ -194,30 +219,6 @@ const OnfidoSdk = () => {
       });
     }
   };
-  // const handleOnVerifyByOnfidoModal = async () => {
-  //   if (!Onfido) {
-  //     Onfido = await import("onfido-sdk-ui");
-  //     setLoading(false);
-  //   }
-  //   let x;
-  //   x = Onfido?.init({
-  //     useModal: true,
-  //     isModalOpen: open,
-  //     onModalRequestClose: function () {
-  //       // Update options with the state of the modal
-  //       x.setOptions({ isModalOpen: false });
-  //     },
-  //     token:
-  //       "eyJhbGciOiJFUzUxMiJ9.eyJleHAiOjE2ODc4MzgzMDcsInBheWxvYWQiOnsiYXBwIjoiY2M0ODZiZDktZGE3ZS00MDY2LWJkYzMtNGJjNTY1ZjBlZDFiIiwiY2xpZW50X3V1aWQiOiJhNTQ4YmY2ZS04ODY2LTQzYWEtYjM5NS1mMzAyMjZkNzk3MTAiLCJpc19zYW5kYm94Ijp0cnVlLCJpc19zZWxmX3NlcnZpY2VfdHJpYWwiOnRydWUsImlzX3RyaWFsIjpmYWxzZSwic2FyZGluZV9zZXNzaW9uIjoiODQ5OTY2MDktOTQ1NC00ZjYyLWFlMzctOWE1MGY2ZTVkYTcxIiwiaGFzX3VzYWdlX3BsYW4iOmZhbHNlfSwidXVpZCI6InBsYXRmb3JtX3N0YXRpY19hcGlfdG9rZW5fdXVpZCIsInVybHMiOnsiZGV0ZWN0X2RvY3VtZW50X3VybCI6Imh0dHBzOi8vc2RrLm9uZmlkby5jb20iLCJzeW5jX3VybCI6Imh0dHBzOi8vc3luYy5vbmZpZG8uY29tIiwiaG9zdGVkX3Nka191cmwiOiJodHRwczovL2lkLm9uZmlkby5jb20iLCJhdXRoX3VybCI6Imh0dHBzOi8vYXBpLm9uZmlkby5jb20iLCJvbmZpZG9fYXBpX3VybCI6Imh0dHBzOi8vYXBpLm9uZmlkby5jb20iLCJ0ZWxlcGhvbnlfdXJsIjoiaHR0cHM6Ly9hcGkub25maWRvLmNvbSJ9fQ.MIGGAkFH00VVYud760VIWwBUXpKTqmq-ZHcq5Dz4EAO7C1lN9Z6hZiFhSoPsQp2quBdfO4YSDYDrU6AbIoMK4vT1u7mgcwJBLfoacz5zsRmjCZdIQqCzuCD9ug0nlwWCS2SFDd5HkxYaJhmQIVJFzhRvO1UvqHiec2qRguGIHFT49WKD5VYw1n0",
-  //     containerId: "onfido-mount",
-
-  //     //    containerEl: <div id="root" />, //ALTERNATIVE to `containerId`
-  //     onComplete: function (data) {
-  //       console.log("everything is complete", data);
-  //     },
-  //     steps: ["welcome", "document", "face", "complete"],
-  //   });
-  // };
 
   const showModal = () => {
     setOpen(true);
@@ -228,35 +229,7 @@ const OnfidoSdk = () => {
     setOpen(false);
   };
 
-  const [status, setStatus] = useState("loading");
-
-  if (status === "verifying")
-    return (
-      <div className="text-center">
-        <Result title="Verifying..." />
-      </div>
-    );
-
-  if (status === "verified")
-    return (
-      <div className="text-center">
-        <Result
-          status={"success"}
-          title="Verified"
-          extra={[
-            <Button
-              type="primary"
-              key="console"
-              onClick={() => {
-                setCurrent((prev) => prev + 1);
-              }}
-            >
-              Go to Resources
-            </Button>,
-          ]}
-        />
-      </div>
-    );
+  
 
   return (
     <>
