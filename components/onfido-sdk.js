@@ -229,7 +229,7 @@ const OnfidoSdk = () => {
   };
 
   const [status, setStatus] = useState("loading");
-  useLayoutEffect(() => {
+  useEffect(() => {
     const handleCheckVerified = async () => {
       const workflowRunId = await handleGenerateWorkflowRunId();
       // const workflowRunId = "3b90820c-a4c7-4635-817b-6c2dc84b75ae";
