@@ -37,7 +37,7 @@ import {
 
 const handleDownloadResources = async (dataSend) => {
   const { data, headers, request } = await axios.get(
-    "http://192.168.3.20:8080/api/file/download",
+    "https://d411-115-73-213-212.ngrok-free.app/api/file/download",
     {
       params: dataSend,
     },
