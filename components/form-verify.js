@@ -48,35 +48,29 @@ const FormRegister = () => {
     console.log(
       "Calling Api to create applicant from first name and last name"
     );
-
-
-
-    localStorage.setItem("customer_info", JSON.stringify(dataStorage));
-    setCurrent((prev) => prev + 1);
-
-    // axios
-    //   .post(
-    //     "http://192.168.3.20:8080/api/customer/create",
-    //     {
-    //       first_name: dataStorage.first_name,
-    //       last_name: dataStorage.last_name,
-    //       email: dataStorage.email,
-    //     },
-    //     {
-    //       headers: {
-    //         "Access-Control-Allow-Origin": "*",
-    //         "Content-Type": "application/json",
-    //       },
-    //     }
-    //   )
-    //   .then((res) => {
-    //     console.log("Create Completed:", res);
-    //     const dataResponse = res.data?.data || null;
-    //     dataStorage.applicant_id = dataResponse.applicant_id;
-    //     console.log("dataStorage", dataStorage);
-    //     localStorage.setItem("customer_onfido", JSON.stringify(dataStorage));
-    //     setCurrent((prev) => prev + 1);
-    //   });
+    axios
+      .post(
+        "http://13.229.139.11:8000/api/customer/create",
+        {
+          first_name: dataStorage.first_name,
+          last_name: dataStorage.last_name,
+          email: dataStorage.email,
+        },
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        console.log("Create Completed:", res);
+        const dataResponse = res.data?.data || null;
+        dataStorage.applicant_id = dataResponse.applicant_id;
+        console.log("dataStorage", dataStorage);
+        localStorage.setItem("customer_onfido", JSON.stringify(dataStorage));
+        setCurrent((prev) => prev + 1);
+      });
   };
 
   return (

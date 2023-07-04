@@ -22,38 +22,34 @@ const isVerifyExisted = (data) => {
 const OnfidoSdk = () => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  
 
   let Onfido;
 
-  const [userData,setUserData] = useState();
-
-  useEffect(()=>{
-    setUserData(JSON.parse(localStorage.getItem("customer_info") || "{}"))
-  },[])
-
-  const [workFlowRunId, setWorkFlowRunId] = useState();
+  const [userData, setUserData] = useState();
 
   useEffect(() => {
-    const dataLocal = JSON.parse(localStorage.getItem("workflow_run") || "{}")
+    setUserData(JSON.parse(localStorage.getItem("customer_onfido") || "{}"));
+  }, []);
 
-    localStorage.setItem("workflow_run",JSON.stringify({
-      workflow_run_id:"23871238712391283p9123i09",
-      done:true
-    }))
-    setWorkFlowRunId(dataLocal)
-  }, [])
+  const [workFlowRun, setWorkFlowRun] = useState();
 
+  useEffect(() => {
+    const dataLocal = JSON.parse(localStorage.getItem("workflow_run") || "{}");
 
-  if (workFlowRunId?.done){
-    return <div className="text-center">
-      <Result status={"success"} title="Update Document Success" />
-    </div>
+    setWorkFlowRun(dataLocal);
+  }, []);
+
+  if (workFlowRun?.done) {
+    return (
+      <div className="text-center">
+        <Result status={"success"} title="Update Document Success" />
+      </div>
+    );
   }
 
   const handleGenerateTokenSdk = async () => {
     const { data } = await axios.post(
-      "http://192.168.3.20:8080/api/onfido/generate-token",
+      "http://13.229.139.11:8000/api/onfido/generate-token",
       {
         applicant_id: userData.applicant_id,
       },
@@ -69,7 +65,7 @@ const OnfidoSdk = () => {
 
   const handleGenerateWorkflowRunId = async () => {
     const { data } = await axios.post(
-      "http://192.168.3.20:8080/api/workflow_run/create",
+      "http://13.229.139.11:8000/api/workflow_run/create",
       {
         applicant_id: userData.applicant_id,
       },
@@ -85,7 +81,7 @@ const OnfidoSdk = () => {
 
   const handleSendDataCompleteToBackend = async (dataSend) => {
     const { data } = await axios.post(
-      "http://192.168.3.20:8080/api/file/create",
+      "http://13.229.139.11:8000/api/file/create",
       dataSend,
       {
         headers: {
@@ -211,6 +207,7 @@ const OnfidoSdk = () => {
               "workflow_run",
               JSON.stringify(dataWorkflowStorage)
             );
+            setWorkFlowRun(dataWorkflowStorage);
           }
 
           // }
@@ -228,8 +225,6 @@ const OnfidoSdk = () => {
   const handleCancel = () => {
     setOpen(false);
   };
-
-  
 
   return (
     <>

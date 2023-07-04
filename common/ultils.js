@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getDataWorkflowRunResult = async (workflowRunId) => {
   const { data } = await axios.get(
-    "http://192.168.3.20:8080/api/workflow_run/get",
+    "http://13.229.139.11:8000/api/workflow_run/get",
     {
       params: {
         workflow_run_id: workflowRunId,
@@ -12,6 +12,7 @@ export const getDataWorkflowRunResult = async (workflowRunId) => {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": true,
       },
     }
   );
@@ -21,7 +22,7 @@ export const getDataWorkflowRunResult = async (workflowRunId) => {
 
 export const getDataReportByWorkflowRunId = async (workflowRunId) => {
   const { data } = await axios.get(
-    "http://192.168.3.20:8080/api/task/list",
+    "http://13.229.139.11:8000/api/task/list",
     {
       params: {
         workflow_run_id: workflowRunId,
@@ -31,6 +32,8 @@ export const getDataReportByWorkflowRunId = async (workflowRunId) => {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
+
+        "ngrok-skip-browser-warning": true,
       },
     }
   );

@@ -37,7 +37,7 @@ import {
 
 const handleDownloadResources = async (dataSend) => {
   const { data, headers, request } = await axios.get(
-    "http://192.168.3.20:8080/api/file/download",
+    "http://13.229.139.11:8000/api/file/download",
     {
       params: dataSend,
     },
@@ -137,382 +137,394 @@ const DocumentPhotoReport = ({ data }) => {
   );
 };
 const KnownFacesCheckReport = ({ data }) => {
-  const { input, output, updated_at, created_at } = data.resource;
-  const { result, status, sub_result, breakdown, properties } = output;
+  if (data) {
+    const { input, output, updated_at, created_at } = data?.resource;
+    const { result, status, sub_result, breakdown, properties } = output;
 
-  return (
-    <div>
-      <Space direction="vertical" size="middle" className="d-flex">
-        <Descriptions title="Result" bordered>
-          <Descriptions.Item label="Result" span={1.5}>
-            {result}
-          </Descriptions.Item>
-          <Descriptions.Item label="Status" span={1.5}>
-            {status}
-          </Descriptions.Item>
-          <Descriptions.Item label="Create at" span={1.5}>
-            {moment(created_at).format("HH:mm:ss - DD/MM/YYYY")}
-          </Descriptions.Item>
-          <Descriptions.Item label="Update at" span={1.5}>
-            {moment(updated_at).format("HH:mm:ss - DD/MM/YYYY")}
-          </Descriptions.Item>
-        </Descriptions>
+    return (
+      <div>
+        <Space direction="vertical" size="middle" className="d-flex">
+          <Descriptions title="Result" bordered>
+            <Descriptions.Item label="Result" span={1.5}>
+              {result}
+            </Descriptions.Item>
+            <Descriptions.Item label="Status" span={1.5}>
+              {status}
+            </Descriptions.Item>
+            <Descriptions.Item label="Create at" span={1.5}>
+              {moment(created_at).format("HH:mm:ss - DD/MM/YYYY")}
+            </Descriptions.Item>
+            <Descriptions.Item label="Update at" span={1.5}>
+              {moment(updated_at).format("HH:mm:ss - DD/MM/YYYY")}
+            </Descriptions.Item>
+          </Descriptions>
 
-        <Descriptions title="Breakdown" bordered>
-          {Object.keys(breakdown).map((item) => {
-            const value = breakdown[item];
-            return (
-              <>
+          <Descriptions title="Breakdown" bordered>
+            {Object.keys(breakdown).map((item) => {
+              const value = breakdown[item];
+              return (
+                <>
+                  <Descriptions.Item
+                    label={
+                      <span className="text-capitalize">
+                        {item.split("_").join(" ")}
+                      </span>
+                    }
+                    span={1.5}
+                  >
+                    {value.result}
+                  </Descriptions.Item>
+                </>
+              );
+            })}
+          </Descriptions>
+
+          <Descriptions title="Properties" bordered>
+            {Object.keys(properties).map((item) => {
+              const value = properties[item];
+
+              return (
                 <Descriptions.Item
+                  key={item}
                   label={
                     <span className="text-capitalize">
                       {item.split("_").join(" ")}
                     </span>
                   }
-                  span={1.5}
+                  span={3}
                 >
-                  {value.result}
+                  <Row>
+                    {value.map((valueItem) => (
+                      <Col span={12} key={valueItem}>
+                        <b className="text-capitalize">applicant</b> :
+                        {valueItem.applicant_id} <br />
+                        <b className="text-capitalize">score</b> :
+                        {valueItem.score}
+                        <br />
+                        <b className="text-capitalize">suspected</b> :
+                        {valueItem.suspected.toString()}
+                        <br />
+                      </Col>
+                    ))}
+                  </Row>
                 </Descriptions.Item>
-              </>
-            );
-          })}
-        </Descriptions>
-
-        <Descriptions title="Properties" bordered>
-          {Object.keys(properties).map((item) => {
-            const value = properties[item];
-
-            return (
-              <Descriptions.Item
-                key={item}
-                label={
-                  <span className="text-capitalize">
-                    {item.split("_").join(" ")}
-                  </span>
-                }
-                span={3}
-              >
-                <Row>
-                  {value.map((valueItem) => (
-                    <Col span={12} key={valueItem}>
-                      <b className="text-capitalize">applicant</b> :
-                      {valueItem.applicant_id} <br />
-                      <b className="text-capitalize">score</b> :
-                      {valueItem.score}
-                      <br />
-                      <b className="text-capitalize">suspected</b> :
-                      {valueItem.suspected.toString()}
-                      <br />
-                    </Col>
-                  ))}
-                </Row>
-              </Descriptions.Item>
-            );
-          })}
-        </Descriptions>
-      </Space>
-    </div>
-  );
+              );
+            })}
+          </Descriptions>
+        </Space>
+      </div>
+    );
+  }
 };
 const DocumentCheckWithAddressReport = ({ data }) => {
-  const { input, output, updated_at, created_at } = data.resource;
-  const { result, status, sub_result, properties } = output;
+  if (data) {
+    const { input, output, updated_at, created_at } = data.resource;
+    const { result, status, sub_result, properties } = output;
 
-  return (
-    <div>
-      <Space direction="vertical" size="middle" className="d-flex">
-        <Descriptions title="Result" bordered>
-          <Descriptions.Item label="Result">{result}</Descriptions.Item>
-          <Descriptions.Item label="Status">{status}</Descriptions.Item>
-          <Descriptions.Item label="Sub result">{sub_result}</Descriptions.Item>
-          <Descriptions.Item label="Create at" span={3}>
-            {moment(created_at).format("HH:mm:ss - DD/MM/YYYY")}
-          </Descriptions.Item>
-          <Descriptions.Item label="Update at" span={2}>
-            {moment(updated_at).format("HH:mm:ss - DD/MM/YYYY")}
-          </Descriptions.Item>
-        </Descriptions>
+    return (
+      <div>
+        <Space direction="vertical" size="middle" className="d-flex">
+          <Descriptions title="Result" bordered>
+            <Descriptions.Item label="Result">{result}</Descriptions.Item>
+            <Descriptions.Item label="Status">{status}</Descriptions.Item>
+            <Descriptions.Item label="Sub result">
+              {sub_result}
+            </Descriptions.Item>
+            <Descriptions.Item label="Create at" span={3}>
+              {moment(created_at).format("HH:mm:ss - DD/MM/YYYY")}
+            </Descriptions.Item>
+            <Descriptions.Item label="Update at" span={2}>
+              {moment(updated_at).format("HH:mm:ss - DD/MM/YYYY")}
+            </Descriptions.Item>
+          </Descriptions>
 
-        <Descriptions title="Document Properties" bordered>
-          <Descriptions.Item label="Address" span={3}>
-            {properties.address}
-          </Descriptions.Item>
-          <Descriptions.Item label="Address Line" span={3}>
-            Line: {properties.address_lines.line1}
-            <br />
-            State: {properties.address_lines.state}
-            <br />
-            Town: {properties.address_lines.town}
-            <br />
-          </Descriptions.Item>
+          <Descriptions title="Document Properties" bordered>
+            <Descriptions.Item label="Address" span={3}>
+              {properties.address}
+            </Descriptions.Item>
+            <Descriptions.Item label="Address Line" span={3}>
+              Line: {properties.address_lines.line1}
+              <br />
+              State: {properties.address_lines.state}
+              <br />
+              Town: {properties.address_lines.town}
+              <br />
+            </Descriptions.Item>
 
-          <Descriptions.Item label="Bar Code" span={3}>
-            <Row>
-              {Object.keys(properties.barcode).map((item, index) => {
+            <Descriptions.Item label="Bar Code" span={3}>
+              <Row>
+                {Object.keys(properties.barcode).map((item, index) => {
+                  return (
+                    <Col key={index} span={12}>
+                      <b className="text-capitalize ">
+                        {item.split("_").join(" ")}
+                      </b>
+                      <span>: {properties.barcode[item]}</span>
+                    </Col>
+                  );
+                })}
+              </Row>
+            </Descriptions.Item>
+
+            {Object.keys(properties).map((item) => {
+              const value = properties[item];
+              if (typeof value === "string")
                 return (
-                  <Col key={index} span={12}>
-                    <b className="text-capitalize ">
-                      {item.split("_").join(" ")}
-                    </b>
-                    <span>: {properties.barcode[item]}</span>
-                  </Col>
+                  <Descriptions.Item
+                    label={
+                      <span className="text-capitalize">
+                        {item.split("_").join(" ")}
+                      </span>
+                    }
+                    span={1.5}
+                  >
+                    {value}
+                  </Descriptions.Item>
                 );
-              })}
-            </Row>
-          </Descriptions.Item>
-
-          {Object.keys(properties).map((item) => {
-            const value = properties[item];
-            if (typeof value === "string")
-              return (
-                <Descriptions.Item
-                  label={
-                    <span className="text-capitalize">
-                      {item.split("_").join(" ")}
-                    </span>
-                  }
-                  span={1.5}
-                >
-                  {value}
-                </Descriptions.Item>
-              );
-          })}
-        </Descriptions>
-      </Space>
-    </div>
-  );
+            })}
+          </Descriptions>
+        </Space>
+      </div>
+    );
+  }
 };
 const FaceVideoReport = ({ data }) => {
-  const { input, output, updated_at, created_at } = data.resource;
+  if (data) {
+    const { input, output, updated_at, created_at } = data.resource;
 
-  return (
-    <div>
-      <Space direction="vertical" size="middle" className="d-flex">
-        <Descriptions title="Result" bordered>
-          <Descriptions.Item label="Create at" span={1.5}>
-            {moment(created_at).format("HH:mm:ss - DD/MM/YYYY")}
-          </Descriptions.Item>
-          <Descriptions.Item label="Update at" span={1.5}>
-            {moment(updated_at).format("HH:mm:ss - DD/MM/YYYY")}
-          </Descriptions.Item>
-          <Descriptions.Item label="Video Detail" span={1.5}>
-            {output[0].id}
-          </Descriptions.Item>
-          <Descriptions.Item label="Video Type" span={1.5}>
-            {output[0].type}
-          </Descriptions.Item>
-        </Descriptions>
-      </Space>
-    </div>
-  );
+    return (
+      <div>
+        <Space direction="vertical" size="middle" className="d-flex">
+          <Descriptions title="Result" bordered>
+            <Descriptions.Item label="Create at" span={1.5}>
+              {moment(created_at).format("HH:mm:ss - DD/MM/YYYY")}
+            </Descriptions.Item>
+            <Descriptions.Item label="Update at" span={1.5}>
+              {moment(updated_at).format("HH:mm:ss - DD/MM/YYYY")}
+            </Descriptions.Item>
+            <Descriptions.Item label="Video Detail" span={1.5}>
+              {output[0].id}
+            </Descriptions.Item>
+            <Descriptions.Item label="Video Type" span={1.5}>
+              {output[0].type}
+            </Descriptions.Item>
+          </Descriptions>
+        </Space>
+      </div>
+    );
+  }
 };
 const FaceCheckReport = ({ data }) => {
-  const { input, output, updated_at, created_at } = data.resource;
-  const { result, status, sub_result, breakdown } = output;
+  if (data) {
+    const { input, output, updated_at, created_at } = data.resource;
+    const { result, status, sub_result, breakdown } = output;
 
-  return (
-    <div>
-      <Space direction="vertical" size="middle" className="d-flex">
-        <Descriptions title="Result" bordered>
-          <Descriptions.Item label="Result" span={1.5}>
-            {result}
-          </Descriptions.Item>
-          <Descriptions.Item label="Status" span={1.5}>
-            {status}
-          </Descriptions.Item>
-          <Descriptions.Item label="Create at" span={1.5}>
-            {moment(created_at).format("HH:mm:ss - DD/MM/YYYY")}
-          </Descriptions.Item>
-          <Descriptions.Item label="Update at" span={1.5}>
-            {moment(updated_at).format("HH:mm:ss - DD/MM/YYYY")}
-          </Descriptions.Item>
-        </Descriptions>
+    return (
+      <div>
+        <Space direction="vertical" size="middle" className="d-flex">
+          <Descriptions title="Result" bordered>
+            <Descriptions.Item label="Result" span={1.5}>
+              {result}
+            </Descriptions.Item>
+            <Descriptions.Item label="Status" span={1.5}>
+              {status}
+            </Descriptions.Item>
+            <Descriptions.Item label="Create at" span={1.5}>
+              {moment(created_at).format("HH:mm:ss - DD/MM/YYYY")}
+            </Descriptions.Item>
+            <Descriptions.Item label="Update at" span={1.5}>
+              {moment(updated_at).format("HH:mm:ss - DD/MM/YYYY")}
+            </Descriptions.Item>
+          </Descriptions>
 
-        <Descriptions title="Breakdown" bordered>
-          {Object.keys(breakdown).map((item) => {
-            const value = breakdown[item].breakdown;
-            if (item === "face_comparison") {
-              return (
-                <>
-                  <Descriptions.Item
-                    label={
-                      <span className="text-capitalize">
-                        {item.split("_").join(" ")} : Face Match
-                      </span>
-                    }
-                    span={1.5}
-                  >
-                    {value.face_match.result}
-                  </Descriptions.Item>
-                  <Descriptions.Item
-                    label={<span className="text-capitalize">Score</span>}
-                    span={1.5}
-                  >
-                    {value.face_match.properties.score}
-                  </Descriptions.Item>
-                </>
-              );
-            }
+          <Descriptions title="Breakdown" bordered>
+            {Object.keys(breakdown).map((item) => {
+              const value = breakdown[item].breakdown;
+              if (item === "face_comparison") {
+                return (
+                  <>
+                    <Descriptions.Item
+                      label={
+                        <span className="text-capitalize">
+                          {item.split("_").join(" ")} : Face Match
+                        </span>
+                      }
+                      span={1.5}
+                    >
+                      {value.face_match.result}
+                    </Descriptions.Item>
+                    <Descriptions.Item
+                      label={<span className="text-capitalize">Score</span>}
+                      span={1.5}
+                    >
+                      {value.face_match.properties.score}
+                    </Descriptions.Item>
+                  </>
+                );
+              }
 
-            if (item === "image_integrity") {
-              return (
-                <>
-                  <Descriptions.Item
-                    label={
-                      <span className="text-capitalize">
-                        {item.split("_").join(" ")} : Face Detected
-                      </span>
-                    }
-                    span={1.5}
-                  >
-                    {value.face_detected.result}
-                  </Descriptions.Item>
-                  <Descriptions.Item
-                    label={<span className="text-capitalize">Score</span>}
-                    span={1.5}
-                  >
-                    {value.face_detected.properties.score || "nothing"}
-                  </Descriptions.Item>
-                </>
-              );
-            }
+              if (item === "image_integrity") {
+                return (
+                  <>
+                    <Descriptions.Item
+                      label={
+                        <span className="text-capitalize">
+                          {item.split("_").join(" ")} : Face Detected
+                        </span>
+                      }
+                      span={1.5}
+                    >
+                      {value.face_detected.result}
+                    </Descriptions.Item>
+                    <Descriptions.Item
+                      label={<span className="text-capitalize">Score</span>}
+                      span={1.5}
+                    >
+                      {value.face_detected.properties.score || "nothing"}
+                    </Descriptions.Item>
+                  </>
+                );
+              }
 
-            if (item === "visual_authenticity") {
-              return (
-                <>
-                  <Descriptions.Item
-                    label={
-                      <span className="text-capitalize">
-                        {item.split("_").join(" ")} : Visual Authenticity
-                      </span>
-                    }
-                    span={1.5}
-                  >
-                    {value.liveness_detected.result}
-                  </Descriptions.Item>
-                  <Descriptions.Item
-                    label={<span className="text-capitalize">Score</span>}
-                    span={1.5}
-                  >
-                    {value.liveness_detected.properties.score || "nothing"}
-                  </Descriptions.Item>
-                  <Descriptions.Item
-                    label={
-                      <span className="text-capitalize">
-                        {item.split("_").join(" ")} : Spoofing Detection
-                      </span>
-                    }
-                    span={1.5}
-                  >
-                    {value.spoofing_detection.result}
-                  </Descriptions.Item>
-                  <Descriptions.Item
-                    label={<span className="text-capitalize">Score</span>}
-                    span={1.5}
-                  >
-                    {value.spoofing_detection.properties.score || "nothing"}
-                  </Descriptions.Item>
-                </>
-              );
-            }
-          })}
-        </Descriptions>
-      </Space>
-    </div>
-  );
+              if (item === "visual_authenticity") {
+                return (
+                  <>
+                    <Descriptions.Item
+                      label={
+                        <span className="text-capitalize">
+                          {item.split("_").join(" ")} : Visual Authenticity
+                        </span>
+                      }
+                      span={1.5}
+                    >
+                      {value.liveness_detected.result}
+                    </Descriptions.Item>
+                    <Descriptions.Item
+                      label={<span className="text-capitalize">Score</span>}
+                      span={1.5}
+                    >
+                      {value.liveness_detected.properties.score || "nothing"}
+                    </Descriptions.Item>
+                    <Descriptions.Item
+                      label={
+                        <span className="text-capitalize">
+                          {item.split("_").join(" ")} : Spoofing Detection
+                        </span>
+                      }
+                      span={1.5}
+                    >
+                      {value.spoofing_detection.result}
+                    </Descriptions.Item>
+                    <Descriptions.Item
+                      label={<span className="text-capitalize">Score</span>}
+                      span={1.5}
+                    >
+                      {value.spoofing_detection.properties.score || "nothing"}
+                    </Descriptions.Item>
+                  </>
+                );
+              }
+            })}
+          </Descriptions>
+        </Space>
+      </div>
+    );
+  }
 };
 const DeviceIntelligenceCheckReport = ({ data }) => {
-  const { input, output, updated_at, created_at } = data.resource;
-  const { result, status, sub_result, breakdown, properties } = output;
+  if (data) {
+    const { input, output, updated_at, created_at } = data.resource;
+    const { result, status, sub_result, breakdown, properties } = output;
 
-  return (
-    <div>
-      <Space direction="vertical" size="middle" className="d-flex">
-        <Descriptions title="Result" bordered>
-          <Descriptions.Item label="Result" span={1.5}>
-            {result}
-          </Descriptions.Item>
-          <Descriptions.Item label="Status" span={1.5}>
-            {status}
-          </Descriptions.Item>
-          <Descriptions.Item label="Create at" span={1.5}>
-            {moment(created_at).format("HH:mm:ss - DD/MM/YYYY")}
-          </Descriptions.Item>
-          <Descriptions.Item label="Update at" span={1.5}>
-            {moment(updated_at).format("HH:mm:ss - DD/MM/YYYY")}
-          </Descriptions.Item>
-        </Descriptions>
+    return (
+      <div>
+        <Space direction="vertical" size="middle" className="d-flex">
+          <Descriptions title="Result" bordered>
+            <Descriptions.Item label="Result" span={1.5}>
+              {result}
+            </Descriptions.Item>
+            <Descriptions.Item label="Status" span={1.5}>
+              {status}
+            </Descriptions.Item>
+            <Descriptions.Item label="Create at" span={1.5}>
+              {moment(created_at).format("HH:mm:ss - DD/MM/YYYY")}
+            </Descriptions.Item>
+            <Descriptions.Item label="Update at" span={1.5}>
+              {moment(updated_at).format("HH:mm:ss - DD/MM/YYYY")}
+            </Descriptions.Item>
+          </Descriptions>
 
-        <Descriptions title="Breakdown" bordered>
-          {Object.keys(breakdown).map((item) => {
-            const value = breakdown[item].breakdown;
-            return (
-              <>
+          <Descriptions title="Breakdown" bordered>
+            {Object.keys(breakdown).map((item) => {
+              const value = breakdown[item].breakdown;
+              return (
+                <>
+                  <Descriptions.Item
+                    label={
+                      <span className="text-capitalize">
+                        {item.split("_").join(" ")} : Application Authenticity
+                      </span>
+                    }
+                    span={1.5}
+                  >
+                    {value.application_authenticity.result}
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label={
+                      <span className="text-capitalize">
+                        {item.split("_").join(" ")} : Device Integrity
+                      </span>
+                    }
+                    span={1.5}
+                  >
+                    {value.device_integrity.result}
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label={
+                      <span className="text-capitalize">
+                        {item.split("_").join(" ")} : Device Reputation
+                      </span>
+                    }
+                    span={1.5}
+                  >
+                    {value.device_reputation.result}
+                  </Descriptions.Item>
+                </>
+              );
+            })}
+          </Descriptions>
+          <Descriptions title="Properties" bordered>
+            {Object.keys(properties).map((item) => {
+              const value = properties[item];
+
+              return (
                 <Descriptions.Item
+                  key={item}
                   label={
                     <span className="text-capitalize">
-                      {item.split("_").join(" ")} : Application Authenticity
+                      {item.split("_").join(" ")}
                     </span>
                   }
-                  span={1.5}
+                  span={3}
                 >
-                  {value.application_authenticity.result}
+                  <Row>
+                    {Object.keys(value).map((valueItem) => (
+                      <Col span={12} key={valueItem}>
+                        <b className="text-capitalize">
+                          {valueItem.split("_").join(" ")}
+                        </b>
+                        : {value[valueItem].toString()}
+                      </Col>
+                    ))}
+                  </Row>
                 </Descriptions.Item>
-                <Descriptions.Item
-                  label={
-                    <span className="text-capitalize">
-                      {item.split("_").join(" ")} : Device Integrity
-                    </span>
-                  }
-                  span={1.5}
-                >
-                  {value.device_integrity.result}
-                </Descriptions.Item>
-                <Descriptions.Item
-                  label={
-                    <span className="text-capitalize">
-                      {item.split("_").join(" ")} : Device Reputation
-                    </span>
-                  }
-                  span={1.5}
-                >
-                  {value.device_reputation.result}
-                </Descriptions.Item>
-              </>
-            );
-          })}
-        </Descriptions>
-        <Descriptions title="Properties" bordered>
-          {Object.keys(properties).map((item) => {
-            const value = properties[item];
-
-            return (
-              <Descriptions.Item
-                key={item}
-                label={
-                  <span className="text-capitalize">
-                    {item.split("_").join(" ")}
-                  </span>
-                }
-                span={3}
-              >
-                <Row>
-                  {Object.keys(value).map((valueItem) => (
-                    <Col span={12} key={valueItem}>
-                      <b className="text-capitalize">
-                        {valueItem.split("_").join(" ")}
-                      </b>
-                      : {value[valueItem].toString()}
-                    </Col>
-                  ))}
-                </Row>
-              </Descriptions.Item>
-            );
-          })}
-        </Descriptions>
-      </Space>
-    </div>
-  );
+              );
+            })}
+          </Descriptions>
+        </Space>
+      </div>
+    );
+  }
 };
 const generateItemAccordion = (data) => {
   const findData = (type) =>
@@ -612,12 +624,13 @@ const ImageResource = ({ dataImg }) => {
           }
         }}
       >
-        {dataImg.name || "Document"}
+        {dataImg.name || "Document  (click to view)"}
       </Tag>
       {visible && imgSrc && (
         <Image
           alt={dataImg.name}
           src={imgSrc}
+          height={350}
           className="w-100"
           fallback="data:image/png;base64,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"
         />
@@ -636,13 +649,23 @@ const DocumentResources = ({ data }) => {
       </div>
       <div className="">
         <Row gutter={16}>
-          {data?.map((item) => (
+          {data?.map((item, index) => (
             <Col
               span={12}
               key={item.id}
               className="d-flex flex-column gap-2 mb-3"
             >
               <ImageResource dataImg={item} />
+              {index === 0 && (
+                <div>
+                  <Tag>Front</Tag>
+                </div>
+              )}
+              {index === 1 && (
+                <div>
+                  <Tag>Back</Tag>
+                </div>
+              )}
             </Col>
           ))}
         </Row>
@@ -771,6 +794,7 @@ const Resources = () => {
   const [dataResources, setDataResources] = useState([]);
   const [dataReports, setDataReports] = useState([]);
   const [workflowRunId, setWorkflowRunId] = useState();
+  const [workflowResult, setWorkflowResult] = useState();
 
   const { userData, setCurrent } = useContext(VerifyContext);
 
@@ -781,6 +805,8 @@ const Resources = () => {
 
   useEffect(() => {
     const getDataReport = async () => {
+      const workflowResult = await getDataWorkflowRunResult(workflowRunId);
+      setWorkflowResult(workflowResult);
       const { data } = await getDataReportByWorkflowRunId(workflowRunId);
 
       const parseData = data.map((item) => JSON.parse(item.resource));
@@ -841,7 +867,7 @@ const Resources = () => {
       ?.Files?.filter((item) => item.type !== "document");
   }, [dataResources, userData]);
 
-  if (workflowRunId && dataReports.length < 8)
+  if (workflowRunId && workflowResult?.status !== "approved")
     return (
       <div className="w-100 h-100">
         <div className="d-flex flex-column gap-4">

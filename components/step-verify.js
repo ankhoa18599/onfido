@@ -1,4 +1,4 @@
-import { Button, message, Steps, theme } from "antd";
+import { Button, FloatButton, message, Steps, theme } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import FormBegin from "./form-verify";
 import OnfidoSdk from "./onfido-sdk";
@@ -12,19 +12,10 @@ const steps = [
     content: <FormBegin />,
   },
   {
-    title: "Verify",
-    content: <OnfidoSdk />,
-  },
-  {
-    title: "Verify Results",
-    content: <OnfidoSdkResult />,
-  },
-  {
-    title: "Resources",
-    content: <Resources />,
+    title: "Send Mail",
+    content: <SendMail />,
   },
 ];
-
 
 const StepVerify = () => {
   const { token } = theme.useToken();
@@ -57,48 +48,52 @@ const StepVerify = () => {
   return (
     <div className="container">
       <VerifyContext.Provider value={{ userData, current, setCurrent }}>
-        
-          <Steps current={current} items={items} />
+        <Steps current={current} items={items} />
 
-          <div style={contentStyle} className="d-flex flex-column gap-4 ">
-            {steps[current].title === "Verify" && (
-              <div className="">
-                <b>{userData?.first_name}</b> <b>{userData?.last_name}</b>
-              </div>
-            )}
-            <div className="w-100">{steps[current].content}</div>
-          </div>
-          <div
-            style={{
-              marginTop: 24,
+        <div style={contentStyle} className="d-flex flex-column gap-4 ">
+          {steps[current].title === "Verify" && (
+            <div className="">
+              <b>{userData?.first_name}</b> <b>{userData?.last_name}</b>
+            </div>
+          )}
+          <div className="w-100">{steps[current].content}</div>
+        </div>
+        <div
+          style={{
+            marginTop: 24,
+          }}
+        >
+          {current > 0 && (
+            <Button
+              style={{
+                margin: "0 8px",
+              }}
+              onClick={() => prev()}
+            >
+              Previous
+            </Button>
+          )}
+          {current < steps.length - 1 && (
+            <Button type="primary" onClick={() => next()}>
+              Next
+            </Button>
+          )}
+
+          {current === steps.length - 1 && (
+            <Button
+              type="primary"
+              onClick={() => message.success("Processing complete!")}
+            >
+              Done
+            </Button>
+          )}
+          <FloatButton
+            onClick={() => {
+              localStorage.clear();
             }}
-          >
-            {current > 0 && (
-              <Button
-                style={{
-                  margin: "0 8px",
-                }}
-                onClick={() => prev()}
-              >
-                Previous
-              </Button>
-            )}
-            {current < steps.length - 1 && (
-              <Button type="primary" onClick={() => next()}>
-                Next
-              </Button>
-            )}
-
-            {current === steps.length - 1 && (
-              <Button
-                type="primary"
-                onClick={() => message.success("Processing complete!")}
-              >
-                Done
-              </Button>
-            )}
-          </div>
-          {current === 1 && <SendMail/>}
+            tooltip={<div>Clear all Data</div>}
+          ></FloatButton>
+        </div>
       </VerifyContext.Provider>
     </div>
   );

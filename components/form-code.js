@@ -1,9 +1,8 @@
-import { Button, Checkbox, Form, Input, Result, Select, Spin } from "antd";
-import { useContext, useEffect, useState } from "react";
-import OnfidoSdk from "./onfido-sdk";
-import axios from "axios";
+import { Button, Form, Input, Select, FloatButton, notification } from "antd";
+import { useContext, useEffect, useRef, useState } from "react";
 import VerifyContext from "./context";
-const { Option } = Select;
+
+import emailjs from "@emailjs/browser";
 
 const formItemLayout = {
   labelCol: {
@@ -39,9 +38,17 @@ const tailFormItemLayout = {
 const FormCode = () => {
   const [form] = Form.useForm();
   const { setCurrent } = useContext(VerifyContext);
+  const [api, contextHolder] = notification.useNotification();
+  const [dataLocal, setDataLocal] = useState({});
+  const ref = useRef();
+  useEffect(() => {
+    setDataLocal(JSON.parse(localStorage.getItem("customer_onfido")));
+  }, []);
+
+  const [code, setCode] = useState(Math.floor(Math.random() * 9000) + 1000);
 
   const onFinish = (values) => {
-    if (values.code != 1234) {
+    if (values.code != code) {
       form.setFields([
         {
           name: "code", // required
@@ -53,10 +60,59 @@ const FormCode = () => {
     }
   };
 
+  const handleSendCode = () => {
+    emailjs
+      .sendForm(
+        "service_ti5qjg6",
+        "template_61pm64e",
+        ref.current,
+        "xIOILLZdpBdLmHzYU"
+      )
+      .then(
+        function (response) {
+          api["success"]({
+            message: `Send Email to ${dataLocal.email} Completed`,
+            description: "Please check your email to get verification link",
+          });
+        },
+        function (error) {
+          api["success"]({
+            message: "Send Email Error",
+            description: error,
+          });
+        }
+      );
+  };
   return (
     <>
+      {contextHolder}
       <div className="w-100 ">
         <h2 className="mb-5 text-center">Verify Code </h2>
+        <div className="text-center mb-5">
+          <Button onClick={handleSendCode}>Send Code to your email</Button>
+        </div>
+        <div className="d-none">
+          <form ref={ref}>
+            <div>
+              <label htmlFor="email">email:</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value={dataLocal.email}
+              />
+            </div>
+            <div>
+              <label htmlFor="message">code:</label>
+              <input
+                id="message"
+                name="message"
+                type="message"
+                value={`Your code for verify: ${code}`}
+              />
+            </div>
+          </form>
+        </div>
         <Form
           {...formItemLayout}
           form={form}
@@ -87,7 +143,7 @@ const FormCode = () => {
 
           <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit">
-              Verify Code
+              Verify
             </Button>
           </Form.Item>
         </Form>

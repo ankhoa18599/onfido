@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
-import { FloatButton, notification } from 'antd';
+import { Button, FloatButton, notification } from "antd";
 
 const SendMail = () => {
   const [api, contextHolder] = notification.useNotification();
-  const [dataLocal,setDataLocal] = useState();
-  const ref=useRef()
-  useEffect(()=>{
-    setDataLocal(JSON.parse(localStorage.getItem("customer_info")))
-  },[])
-  const handleOnClickSendMail = () =>{
-    if (dataLocal){
+  const [dataLocal, setDataLocal] = useState();
+  const ref = useRef();
+  useEffect(() => {
+    setDataLocal(JSON.parse(localStorage.getItem("customer_onfido")));
+  }, []);
+  const handleOnClickSendMail = () => {
+    if (dataLocal) {
       emailjs
         .sendForm(
           "service_ti5qjg6",
@@ -21,42 +21,44 @@ const SendMail = () => {
         .then(
           function (response) {
             api["success"]({
-              message: 'Send Email Completed',
-              description:
-                'Please check your email to get verification link',
+              message: `Send Email to ${dataLocal.email} Completed`,
+              description: "Please check your email to get verification link",
             });
           },
           function (error) {
             api["success"]({
-              message: 'Send Email Error',
-              description:
-                error,
+              message: "Send Email Error",
+              description: error,
             });
           }
         );
     }
-    
-  }
+  };
   return (
     <>
-    
-    {contextHolder}
-    
-    <FloatButton onClick={()=>{handleOnClickSendMail()}} tooltip={<div>Send Link KYC</div>} />
-      {dataLocal &&(
-        <div className='d-none'>
-          
-            <form ref={ref}>
+      {contextHolder}
+
+      <Button
+        type="primary"
+        onClick={() => {
+          handleOnClickSendMail();
+        }}
+      >
+        Send Mail Verify To customer
+      </Button>
+      {dataLocal && (
+        <div className="d-none">
+          <form ref={ref}>
             <div>
               <label htmlFor="email">email:</label>
               <input
                 id="email"
-                name='email'
+                name="email"
                 type="email"
                 value={dataLocal.email}
               />
             </div>
-           <div>
+            <div>
               <label htmlFor="name">name:</label>
               <input
                 id="name"
@@ -64,9 +66,8 @@ const SendMail = () => {
                 type="text"
                 value={dataLocal.first_name + " " + dataLocal.last_name}
               />
-           </div>
-           <div>
-
+            </div>
+            <div>
               <label htmlFor="message">message:</label>
               <input
                 id="message"
@@ -74,14 +75,12 @@ const SendMail = () => {
                 type="text"
                 value={"https://onfido-demo.web.app/link-verify.html"}
               />
-           </div>
-            </form>
-
+            </div>
+          </form>
         </div>
       )}
-    
     </>
-  )
-}
+  );
+};
 
-export default SendMail
+export default SendMail;

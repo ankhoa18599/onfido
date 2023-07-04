@@ -1,4 +1,4 @@
-import { Button, message, Steps, theme } from "antd";
+import { Button, FloatButton, message, Steps, theme } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import FormBegin from "./form-verify";
 import OnfidoSdk from "./onfido-sdk";
@@ -95,6 +95,12 @@ const StepVerify = () => {
             </Button>
           )}
         </div>
+        <FloatButton
+          onClick={() => {
+            localStorage.clear();
+          }}
+          tooltip={<div>Clear all Data</div>}
+        ></FloatButton>
       </VerifyContext.Provider>
     </div>
   );
