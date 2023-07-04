@@ -50,7 +50,7 @@ const FormRegister = () => {
     );
     axios
       .post(
-        "http://13.229.139.11:8000/api/customer/create",
+        "https://d2q3u1swggiif7.cloudfront.net/api/customer/create",
         {
           first_name: dataStorage.first_name,
           last_name: dataStorage.last_name,

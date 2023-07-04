@@ -1,10 +1,7 @@
 import { Button, FloatButton, message, Steps, theme } from "antd";
-import { useEffect, useMemo, useState } from "react";
-import FormBegin from "./form-verify";
-import OnfidoSdk from "./onfido-sdk";
+import { useEffect, useState } from "react";
 import VerifyContext from "./context";
-import Resources from "./resources";
-import OnfidoSdkResult from "./onfido-sdk-result";
+import FormBegin from "./form-verify";
 import SendMail from "./send-mail";
 const steps = [
   {

@@ -91,28 +91,31 @@ const FormCode = () => {
         <div className="text-center mb-5">
           <Button onClick={handleSendCode}>Send Code to your email</Button>
         </div>
-        <div className="d-none">
-          <form ref={ref}>
-            <div>
-              <label htmlFor="email">email:</label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={dataLocal.email}
-              />
-            </div>
-            <div>
-              <label htmlFor="message">code:</label>
-              <input
-                id="message"
-                name="message"
-                type="message"
-                value={`Your code for verify: ${code}`}
-              />
-            </div>
-          </form>
-        </div>
+        {dataLocal && (
+          <div className="d-none">
+            <form ref={ref}>
+              <div>
+                <label htmlFor="email">email:</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={dataLocal.email}
+                />
+              </div>
+              <div>
+                <label htmlFor="message">code:</label>
+                <input
+                  id="message"
+                  name="message"
+                  type="message"
+                  value={`Your code for verify: ${code}`}
+                />
+              </div>
+            </form>
+          </div>
+        )}
+
         <Form
           {...formItemLayout}
           form={form}

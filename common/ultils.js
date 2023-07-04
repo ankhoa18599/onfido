@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getDataWorkflowRunResult = async (workflowRunId) => {
   const { data } = await axios.get(
-    "http://13.229.139.11:8000/api/workflow_run/get",
+    "https://d2q3u1swggiif7.cloudfront.net/api/workflow_run/get",
     {
       params: {
         workflow_run_id: workflowRunId,
@@ -22,7 +22,7 @@ export const getDataWorkflowRunResult = async (workflowRunId) => {
 
 export const getDataReportByWorkflowRunId = async (workflowRunId) => {
   const { data } = await axios.get(
-    "http://13.229.139.11:8000/api/task/list",
+    "https://d2q3u1swggiif7.cloudfront.net/api/task/list",
     {
       params: {
         workflow_run_id: workflowRunId,

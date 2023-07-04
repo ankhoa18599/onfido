@@ -1,11 +1,10 @@
 import { Button, FloatButton, message, Steps, theme } from "antd";
-import { useEffect, useMemo, useState } from "react";
-import FormBegin from "./form-verify";
-import OnfidoSdk from "./onfido-sdk";
+import { useEffect, useState } from "react";
 import VerifyContext from "./context";
-import Resources from "./resources";
 import FormCheckCode from "./form-code";
+import OnfidoSdk from "./onfido-sdk";
 import OnfidoSdkResult from "./onfido-sdk-result";
+import Resources from "./resources";
 const steps = [
   {
     title: "Check Code",
@@ -80,7 +79,7 @@ const StepVerify = () => {
               Previous
             </Button>
           )}
-          {current < steps.length - 1 && (
+          {current < steps.length - 1 && current != 0 && (
             <Button type="primary" onClick={() => next()}>
               Next
             </Button>

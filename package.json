@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "description": "**Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**",
-  "main": "next.config.js",
   "repository": {
     "type": "git",
     "url": "git+https://tranankhoa@bitbucket.org/tranankhoa/onfido-fe.git"
@@ -22,7 +21,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^3.11.0",
-    "antd": "^5.6.3",
+    "antd": "5.6.3",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.0",
     "firebase": "^9.23.0",
@@ -36,5 +35,6 @@
   "devDependencies": {
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.7"
-  }
+  },
+  "main": "next.config.js"
 }

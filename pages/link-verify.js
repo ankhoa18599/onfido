@@ -1,5 +1,6 @@
+import StepVerify from "components/step-verify-link";
 import Head from "next/head";
-import StepVerify from "../components/step-verify-link";
+// import StepVerify from "../components/step-verify-link";
 
 export default function Verify() {
   return (

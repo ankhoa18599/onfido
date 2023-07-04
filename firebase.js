@@ -13,7 +13,7 @@ const firebaseConfig = {
   storageBucket: "onfido-demo.appspot.com",
   messagingSenderId: "425161709549",
   appId: "1:425161709549:web:18b8788ab243991bb5b9e4",
-  measurementId: "G-2X43NZJ22G"
+  measurementId: "G-2X43NZJ22G",
 };
 
 // Initialize Firebase

@@ -22,7 +22,7 @@ const isVerifyExisted = (data) => {
 const OnfidoSdk = () => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const { setCurrent } = useContext(VerifyContext);
   let Onfido;
 
   const [userData, setUserData] = useState();
@@ -42,14 +42,28 @@ const OnfidoSdk = () => {
   if (workFlowRun?.done) {
     return (
       <div className="text-center">
-        <Result status={"success"} title="Update Document Success" />
+        <Result
+          status={"success"}
+          title="Update Document Success"
+          extra={[
+            <Button
+              type="primary"
+              key="console"
+              onClick={() => {
+                setCurrent((prev) => prev + 1);
+              }}
+            >
+              Go to Verify Result
+            </Button>,
+          ]}
+        />
       </div>
     );
   }
 
   const handleGenerateTokenSdk = async () => {
     const { data } = await axios.post(
-      "http://13.229.139.11:8000/api/onfido/generate-token",
+      "https://d2q3u1swggiif7.cloudfront.net/api/onfido/generate-token",
       {
         applicant_id: userData.applicant_id,
       },
@@ -65,7 +79,7 @@ const OnfidoSdk = () => {
 
   const handleGenerateWorkflowRunId = async () => {
     const { data } = await axios.post(
-      "http://13.229.139.11:8000/api/workflow_run/create",
+      "https://d2q3u1swggiif7.cloudfront.net/api/workflow_run/create",
       {
         applicant_id: userData.applicant_id,
       },
@@ -81,7 +95,7 @@ const OnfidoSdk = () => {
 
   const handleSendDataCompleteToBackend = async (dataSend) => {
     const { data } = await axios.post(
-      "http://13.229.139.11:8000/api/file/create",
+      "https://d2q3u1swggiif7.cloudfront.net/api/file/create",
       dataSend,
       {
         headers: {

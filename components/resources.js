@@ -20,7 +20,7 @@ import moment from "moment";
 import {
   getDataReportByWorkflowRunId,
   getDataWorkflowRunResult,
-} from "../common/ultils";
+} from "common/ultils";
 
 /*** Vendors ***/
 
@@ -37,7 +37,7 @@ import {
 
 const handleDownloadResources = async (dataSend) => {
   const { data, headers, request } = await axios.get(
-    "http://13.229.139.11:8000/api/file/download",
+    "http://192.168.3.20:8080/api/file/download",
     {
       params: dataSend,
     },
@@ -50,91 +50,97 @@ const handleDownloadResources = async (dataSend) => {
 };
 
 const StartReport = ({ data }) => {
-  const { input, output, updated_at, created_at } = data.resource;
+  if (data) {
+    const { input, output, updated_at, created_at } = data.resource;
 
-  return (
-    <div>
-      <Space direction="vertical" size="middle" className="d-flex">
-        <Descriptions title="Result" bordered>
-          <Descriptions.Item label="Create at" span={1.5}>
-            {moment(created_at).format("HH:mm:ss - DD/MM/YYYY")}
-          </Descriptions.Item>
-          <Descriptions.Item label="Update at" span={1.5}>
-            {moment(updated_at).format("HH:mm:ss - DD/MM/YYYY")}
-          </Descriptions.Item>
-        </Descriptions>
-      </Space>
-    </div>
-  );
+    return (
+      <div>
+        <Space direction="vertical" size="middle" className="d-flex">
+          <Descriptions title="Result" bordered>
+            <Descriptions.Item label="Create at" span={1.5}>
+              {moment(created_at).format("HH:mm:ss - DD/MM/YYYY")}
+            </Descriptions.Item>
+            <Descriptions.Item label="Update at" span={1.5}>
+              {moment(updated_at).format("HH:mm:ss - DD/MM/YYYY")}
+            </Descriptions.Item>
+          </Descriptions>
+        </Space>
+      </div>
+    );
+  }
 };
 const ProfileReport = ({ data }) => {
-  const { input, output, updated_at, created_at } = data.resource;
+  if (data) {
+    const { input, output, updated_at, created_at } = data.resource;
 
-  return (
-    <div>
-      <Space direction="vertical" size="middle" className="d-flex">
-        <Descriptions title="Result" bordered>
-          <Descriptions.Item label="Create at" span={1.5}>
-            {moment(created_at).format("HH:mm:ss - DD/MM/YYYY")}
-          </Descriptions.Item>
-          <Descriptions.Item label="Update at" span={1.5}>
-            {moment(updated_at).format("HH:mm:ss - DD/MM/YYYY")}
-          </Descriptions.Item>
-        </Descriptions>
-        <Descriptions title="User Info" bordered>
-          {Object.keys(output).map((item) => {
-            const value = output[item];
-            return (
-              <>
-                <Descriptions.Item
-                  label={
-                    <span className="text-capitalize">
-                      {item.split("_").join(" ")}
-                    </span>
-                  }
-                  span={1.5}
-                >
-                  {value}
-                </Descriptions.Item>
-              </>
-            );
-          })}
-        </Descriptions>
-      </Space>
-    </div>
-  );
+    return (
+      <div>
+        <Space direction="vertical" size="middle" className="d-flex">
+          <Descriptions title="Result" bordered>
+            <Descriptions.Item label="Create at" span={1.5}>
+              {moment(created_at).format("HH:mm:ss - DD/MM/YYYY")}
+            </Descriptions.Item>
+            <Descriptions.Item label="Update at" span={1.5}>
+              {moment(updated_at).format("HH:mm:ss - DD/MM/YYYY")}
+            </Descriptions.Item>
+          </Descriptions>
+          <Descriptions title="User Info" bordered>
+            {Object.keys(output).map((item) => {
+              const value = output[item];
+              return (
+                <>
+                  <Descriptions.Item
+                    label={
+                      <span className="text-capitalize">
+                        {item.split("_").join(" ")}
+                      </span>
+                    }
+                    span={1.5}
+                  >
+                    {value}
+                  </Descriptions.Item>
+                </>
+              );
+            })}
+          </Descriptions>
+        </Space>
+      </div>
+    );
+  }
 };
 const DocumentPhotoReport = ({ data }) => {
-  const { input, output, updated_at, created_at } = data.resource;
+  if (data) {
+    const { input, output, updated_at, created_at } = data.resource;
 
-  return (
-    <div>
-      <Space direction="vertical" size="middle" className="d-flex">
-        <Descriptions title="Result" bordered>
-          <Descriptions.Item label="Create at" span={1.5}>
-            {moment(created_at).format("HH:mm:ss - DD/MM/YYYY")}
-          </Descriptions.Item>
-          <Descriptions.Item label="Update at" span={1.5}>
-            {moment(updated_at).format("HH:mm:ss - DD/MM/YYYY")}
-          </Descriptions.Item>
-        </Descriptions>
-        <Descriptions title="Documents" bordered>
-          <Descriptions.Item label="Document" span={1.5}>
-            {output[0].id}
-          </Descriptions.Item>
-          <Descriptions.Item label="Type" span={1.5}>
-            {output[0].type}
-          </Descriptions.Item>
-          <Descriptions.Item label="Document" span={1.5}>
-            {output[1].id}
-          </Descriptions.Item>
-          <Descriptions.Item label="Type" span={1.5}>
-            {output[1].type}
-          </Descriptions.Item>
-        </Descriptions>
-      </Space>
-    </div>
-  );
+    return (
+      <div>
+        <Space direction="vertical" size="middle" className="d-flex">
+          <Descriptions title="Result" bordered>
+            <Descriptions.Item label="Create at" span={1.5}>
+              {moment(created_at).format("HH:mm:ss - DD/MM/YYYY")}
+            </Descriptions.Item>
+            <Descriptions.Item label="Update at" span={1.5}>
+              {moment(updated_at).format("HH:mm:ss - DD/MM/YYYY")}
+            </Descriptions.Item>
+          </Descriptions>
+          <Descriptions title="Documents" bordered>
+            <Descriptions.Item label="Document" span={1.5}>
+              {output[0].id}
+            </Descriptions.Item>
+            <Descriptions.Item label="Type" span={1.5}>
+              {output[0].type}
+            </Descriptions.Item>
+            <Descriptions.Item label="Document" span={1.5}>
+              {output[1].id}
+            </Descriptions.Item>
+            <Descriptions.Item label="Type" span={1.5}>
+              {output[1].type}
+            </Descriptions.Item>
+          </Descriptions>
+        </Space>
+      </div>
+    );
+  }
 };
 const KnownFacesCheckReport = ({ data }) => {
   if (data) {
